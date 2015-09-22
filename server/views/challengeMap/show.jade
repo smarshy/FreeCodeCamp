@@ -17,7 +17,6 @@ block content
                     | since we launched &thinsp;
                     span.text-primary #{daysRunning} &thinsp;
                     | days ago.
-                a.btn.btn-lg.signup-btn.btn-block(href="https://www.facebook.com/sharer/sharer.php?u=http://freecodecamp.com" target='_blank') Share our open source community on Facebook and help us grow.
                 .row
                     .col-xs-12.col-sm-8.col-sm-offset-2
                         h3 800 Hours of Practice:
@@ -102,7 +101,24 @@ block content
                                                         span= challenge.title
                                                             span.sr-only= " Incomplete"
 
-    //#announcementModal.modal(tabindex='-1')
+                                if (challengeBlock.completed === 100)
+                                    .button-spacer
+                                    .row
+                                        .col-xs-12.col-sm-8.col-md-6.col-sm-offset-3.col-md-offset-2
+                                            a.btn.btn-lg.btn-block.signup-btn#challenge-block-share-button Section complete! Tell your friends.
+                                                .hidden(id="#{challengeBlock.name}")
+
+    script.
+        $(document).ready(function () {
+            $("#challenge-block-share-button").on("click", function(e) {
+                var challengeBlockName = $(this).children().attr("id");
+                var challengeBlockEscapedName = challengeBlockName.replace(/\s/, '%20');
+                var challengeBlockDashedName = challengeBlockName.replace(/\s/, '-').toLowerCase();
+                // localStorage.linkedIn = "true";
+            });
+        });
+
+//#announcementModal.modal(tabindex='-1')
     //    .modal-dialog.animated.fadeInUp.fast-animation
     //        .modal-content
     //            .modal-header.challenge-list-header Add us to your LinkedIn profile
