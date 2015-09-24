@@ -58,7 +58,7 @@
         "This is important because without your <code>document ready function</code>, your code may run before your HTML is rendered, which would cause bugs.",
         "Now let's write our first jQuery statement. All jQuery functions start with a <code>$</code>, usually referred to as a <code>dollar sign operator</code>, or simply as <code>bling</code>.",
         "jQuery often selects an HTML element with a <code>selector</code>, then does something to that element.",
-        "For example, let's make all of your <code>button</code> elements bounce. Just add this code inside your <code>document ready function</code>: <code>$(\"button\").addClass(\"animated bounce\")</code>.",
+        "For example, let's make all of your <code>button</code> elements bounce. Just add this code inside your document ready function: <code>$(\"button\").addClass(\"animated bounce\")</code>.",
         "Note that we've already included both the jQuery library and the Animate.css library in your code editor. So you are using jQuery to apply the Animate.css <code>bounce</code> class to your <code>button</code> elements."
       ],
       "tests": [
@@ -676,10 +676,10 @@
       "title": "Target the Children of an Element Using jQuery",
       "difficulty": 3.14,
       "description": [
-        "Many HTML elements have <code>children</code> elements from which they <code>inherit</code> their properties.",
+        "Many HTML elements have <code>children</code> which <code>inherit</code> their properties from their parent HTML elements.",
         "For example, every HTML element is a child of your <code>body</code> element, and your \"jQuery Playground\" <code>h3</code> element is a child of your <code>&#60;div class=\"container-fluid\"&#62</code> element.",
         "jQuery has a function called <code>children()</code> that allows you to access the children of whichever element you've selected.",
-        "Here's an example of how you would use the <code>children()</code> function to give the children of your <code>left-well</code> element the background color of blue: <code>$(\"#left-well\").children().css(\"color\", \"blue\")</code>",
+        "Here's an example of how you would use the <code>children()</code> function to give the children of your <code>left-well</code> element the color of blue: <code>$(\"#left-well\").children().css(\"color\", \"blue\")</code>",
         "Give all the children of your <code>#right-well</code> element a color of green."
       ],
       "tests": [
@@ -735,11 +735,11 @@
         "You've seen why id attributes are so convenient for targeting with jQuery selectors. But you won't always have such neat ids to work with.",
         "Fortunately, jQuery has some other tricks for targeting the right elements.",
         "jQuery uses CSS Selectors to target elements. <code>target:nth-child(n)</code> css selector allows you to select all the nth element with the target class or element type.",
-        "Here's how you would give the third element in each well bounce: <code>$(\".target:nth-child(3)\").addClass(\"animated bounce\");</code>",
-        "Make the second child in each of your well elements bounce."
+        "Make the second child in each of your well elements bounce. You must target the children of element with the <code>target</code> class.",
+        "Here's how you would give the third element in each well bounce: <code>$(\".target:nth-child(3)\").addClass(\"animated bounce\");</code>"
       ],
       "tests": [
-        "assert($(\".target:nth-child(2)\").hasClass(\"animated\") && $(\".target:nth-child(2)\").hasClass(\"bounce\"), 'The second element in each of your <code>well</code> elements should bounce.')",
+        "assert($(\".target:nth-child(2)\").hasClass(\"animated\") && $(\".target:nth-child(2)\").hasClass(\"bounce\"), 'The second element in your <code>target</code> elements should bounce.')",
         "assert(editor.match(/\\:nth-child\\(/g), 'You should use the <code>&#58;nth-child&#40&#41</code> function to modify these elements.')",
         "assert(editor.match(/<button class=\"btn btn-default target\" id=\"target2\">/g), 'Only use jQuery to add these classes to the element.')"
       ],

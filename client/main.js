@@ -1,14 +1,16 @@
 $(document).ready(function() {
-  var challengeName = typeof challengeName !== undefined ? challengeName : 'Untitled';
+
+  var challengeName = typeof challengeName !== 'undefined' ?
+    challengeName :
+    'Untitled';
+
   if (challengeName) {
     ga('send', 'event',  'Challenge', 'load', challengeName);
   }
 
-  $(document).ready(function() {
-    if (typeof editor !== 'undefined') {
-      $('#reset-button').on('click', resetEditor);
-    }
-  });
+  if (typeof editor !== 'undefined') {
+    $('#reset-button').on('click', resetEditor);
+  }
 
   var CSRF_HEADER = 'X-CSRF-Token';
 
@@ -69,23 +71,61 @@ $(document).ready(function() {
       $('#search-issue').unbind('click');
       $('#search-issue').on('click', function() {
           var queryIssue = window.location.href.toString();
-          window.open('https://github.com/FreeCodeCamp/FreeCodeCamp/issues?q=is:issue is:all '+ queryIssue.substr(queryIssue.lastIndexOf('challenges/') + 11).replace('/', ''), '_blank');
+          window.open('https://github.com/FreeCodeCamp/FreeCodeCamp/issues?q=' +
+            'is:issue is:all ' + (challenge_Name || challengeName) + ' OR ' +
+            queryIssue.substr(queryIssue.lastIndexOf('challenges/') + 11)
+            .replace('/', ''), '_blank');
       });
 
       $('#help-ive-found-a-bug-wiki-article').unbind('click');
       $('#help-ive-found-a-bug-wiki-article').on('click', function() {
-        var queryIssue = window.location.href.toString();
         window.open("https://github.com/FreeCodeCamp/FreeCodeCamp/wiki/Help-I've-Found-a-Bug", '_blank');
       });
 
       $('#report-issue').unbind('click');
       $('#report-issue').on('click', function() {
-          var textMessage = 'https://github.com/freecodecamp/freecodecamp/issues/new?&body=Challenge ' + window.location.href + ' has an issue.';
-          textMessage += ' User Agent is: <code>' + navigator.userAgent + '</code>.';
-          textMessage += ' Please describe how to reproduce this issue, and include links to screenshots if possible.%0A%0A';
-          textMessage = textMessage.replace(';', ','); //GitHub cuts User Agent text because of ';' symbol so I just replace it with ','
+          var textMessage = [
+            'Challenge [',
+            (challenge_Name || challengeName || window.location.href),
+            '](',
+            window.location.href,
+            ') has an issue.\n',
+            'User Agent is: <code>',
+            navigator.userAgent,
+            '</code>.\n',
+            'Please describe how to reproduce this issue, and include ',
+            'links to screenshots if possible.\n\n'
+          ].join('');
+
+          if (editor.getValue().trim()) {
+            var type;
+            switch (challengeType) {
+              case challengeTypes.HTML_CSS_JQ:
+                type = 'html';
+                break;
+              case challengeTypes.JAVASCRIPT:
+                type = 'javascript';
+                break;
+              default:
+                type = '';
+            }
+
+            textMessage += [
+              'My code:\n```',
+              type,
+              '\n',
+              editor.getValue(),
+              '\n```\n\n'
+            ].join('');
+          }
+
+          textMessage = encodeURIComponent(textMessage);
+
           $('#issue-modal').modal('hide');
-          window.open(textMessage, '_blank');
+          window.open(
+            'https://github.com/freecodecamp/freecodecamp/issues/new?&body=' +
+            textMessage, '_blank'
+          );
       });
 
       $('#completed-courseware').unbind('click');
@@ -198,12 +238,6 @@ $(document).ready(function() {
                       break;
               }
           }
-      });
-
-      $('.next-challenge-button').unbind('click');
-      $('.next-challenge-button').on('click', function() {
-          l = location.pathname.split('/');
-          window.location = '/challenges/' + (parseInt(l[l.length - 1]) + 1);
       });
 
       $('#complete-courseware-dialog').on('hidden.bs.modal', function() {
